@@ -8,7 +8,8 @@ export const fetchIngredientsList = async (): Promise<Ingredient[]> => {
       console.warn('Failed to fetch ingredients:', res.status);
       return [];
     }
-    return await res.json();
+    const data = await res.json();
+    return data.results || data;
   } catch (error) {
     console.error('Error in fetchIngredientsList:', error);
     return [];
