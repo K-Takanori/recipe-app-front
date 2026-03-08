@@ -9,8 +9,9 @@ export const fetchShoppingItems = async (): Promise<ShoppingItem[]> => {
       return [];
     }
     const data = await res.json();
+    const items = data.results || data;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return data.map((item: any) => ({
+    return items.map((item: any) => ({
       id: item.id,
       name: item.name,
       isBought: item.is_bought,

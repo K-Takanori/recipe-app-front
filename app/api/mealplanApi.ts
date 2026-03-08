@@ -16,8 +16,9 @@ export const fetchMealPlans = async (start: string, end: string): Promise<MealPl
       return [];
     }
     const data = await res.json();
+    const items = data.results || data;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return data.map((item: any) => ({
+    return items.map((item: any) => ({
       id: item.id,
       date: item.date,
       recipeId: item.recipe,
@@ -39,11 +40,12 @@ export const setMealPlan = async (date: string, recipeId: number | null): Promis
   // First, check if a plan already exists for this date
   const existing = await fetch(`${API_BASE_URL}/meal-plans/?start=${date}&end=${date}`, getRequestOptions());
   const data = await existing.json();
+  const items = data.results || data;
   
   let res;
-  if (data.length > 0) {
+  if (items.length > 0) {
     // Update existing
-    res = await fetch(`${API_BASE_URL}/meal-plans/${data[0].id}/`, getRequestOptions('PATCH', { recipe: recipeId }));
+    res = await fetch(`${API_BASE_URL}/meal-plans/${items[0].id}/`, getRequestOptions('PATCH', { recipe: recipeId }));
     if (!res.ok) throw new Error('Failed to update meal plan');
   } else {
     // Create new
