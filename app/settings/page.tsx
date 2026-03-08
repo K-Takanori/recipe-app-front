@@ -174,6 +174,7 @@ export default function SettingsPage() {
               )}
             </div>
           </div>
+          
         </section>
       </main>
       <Footer />

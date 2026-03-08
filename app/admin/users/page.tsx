@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import BackButton from "@/components/BackButton";
 import { API_BASE_URL, getRequestOptions } from "@/app/api/authHelper";
+import { deleteUser } from "@/app/api/userApi";
 
 interface User {
   id: number;
@@ -84,6 +85,28 @@ export default function UserManagementPage() {
       setFormError("接続エラーが発生しました。");
     } finally {
       setSubmitting(false);
+    }
+  };
+
+  const handleDeleteUser = async (targetUserId: number) => {
+    if (targetUserId === 1) {
+      alert("保護された管理者(ID:1)は削除できません。");
+      return;
+    }
+    // 自分自身の削除警告
+    if (targetUserId === user?.id) {
+      if (!window.confirm("警告: あなた自身のアカウントを削除しようとしています。本当に削除してよろしいですか？")) return;
+    } else {
+      if (!window.confirm("このユーザーを完全に削除してもよろしいですか？（この操作は取り消せません）")) return;
+    }
+
+    try {
+      await deleteUser(targetUserId);
+      setUsers(users.filter(u => u.id !== targetUserId));
+    } catch (err: any) {
+      console.error("Failed to delete user", err);
+      // alert or set error
+      setFormError(err.message || "ユーザーの削除に失敗しました。");
     }
   };
 
@@ -192,6 +215,7 @@ export default function UserManagementPage() {
                       <th className="px-6 py-4 text-xs font-black text-gray-400 uppercase tracking-widest">ID</th>
                       <th className="px-6 py-4 text-xs font-black text-gray-400 uppercase tracking-widest">ユーザー名</th>
                       <th className="px-6 py-4 text-xs font-black text-gray-400 uppercase tracking-widest">権限</th>
+                      <th className="px-6 py-4 text-xs font-black text-gray-400 uppercase tracking-widest text-right">操作</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-50">
@@ -212,6 +236,22 @@ export default function UserManagementPage() {
                               USER
                             </span>
                           )}
+                        </td>
+                        <td className="px-6 py-4 text-right">
+                          <button
+                            onClick={() => handleDeleteUser(u.id)}
+                            disabled={u.id === 1}
+                            className={`p-2 rounded-full transition ${
+                              u.id === 1 
+                                ? "text-gray-300 cursor-not-allowed" 
+                                : "text-red-500 hover:text-red-700 hover:bg-red-50"
+                            }`}
+                            title={u.id === 1 ? "保護された管理者は削除できません" : "このユーザーを削除"}
+                          >
+                            <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                          </button>
                         </td>
                       </tr>
                     ))}
