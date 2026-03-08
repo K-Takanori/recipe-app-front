@@ -20,6 +20,7 @@ const getCookie = (name: string): string | null => {
 /**
  * APIリクエスト用の共通ヘッダー（クッキー送信を含む）
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const getRequestOptions = (method: string = "GET", body?: any) => {
   const options: RequestInit = {
     method,

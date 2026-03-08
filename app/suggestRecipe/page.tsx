@@ -5,7 +5,7 @@ import Footer from "@/components/Footer";
 import { fetchFoods } from "@/app/api/foodApi";
 import { fetchRecipes } from "@/app/api/recipeApi";
 import { addShoppingItem } from "@/app/api/shoppingApi";
-import { FoodItem, Recipe } from "@/types";
+import { Recipe } from "@/types";
 import BackButton from "@/components/BackButton";
 
 interface SuggestedRecipe extends Recipe {

@@ -16,12 +16,15 @@ export const fetchMealPlans = async (start: string, end: string): Promise<MealPl
       return [];
     }
     const data = await res.json();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return data.map((item: any) => ({
       id: item.id,
       date: item.date,
       recipeId: item.recipe,
       recipe: item.recipe_detail ? {
         id: item.recipe_detail.id,
+        user: item.recipe_detail.user || 0,
+        username: item.recipe_detail.username || '',
         name: item.recipe_detail.name,
         ingredients: item.recipe_detail.ingredients
       } : undefined
@@ -55,6 +58,8 @@ export const setMealPlan = async (date: string, recipeId: number | null): Promis
     recipeId: item.recipe,
     recipe: item.recipe_detail ? {
       id: item.recipe_detail.id,
+      user: item.recipe_detail.user || 0,
+      username: item.recipe_detail.username || '',
       name: item.recipe_detail.name,
       ingredients: item.recipe_detail.ingredients
     } : undefined

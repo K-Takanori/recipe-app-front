@@ -34,7 +34,7 @@ export default function ShoppingMemoModal({
       };
       loadIngredients();
     }
-  }, [isOpen]);
+  }, [isOpen, foods.length]);
 
   const handleAdd = () => {
     if (!newShoppingName.trim()) return;

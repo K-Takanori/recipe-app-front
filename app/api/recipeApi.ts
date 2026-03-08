@@ -9,6 +9,7 @@ export const fetchRecipes = async (): Promise<Recipe[]> => {
       return [];
     }
     const data = await res.json();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return data.map((item: any) => ({
       id: item.id,
       user: item.user,

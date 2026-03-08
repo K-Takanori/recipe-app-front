@@ -10,6 +10,7 @@ export const fetchFoods = async (): Promise<FoodItem[]> => {
       return [];
     }
     const data = await res.json();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return data.map((item: any) => ({
       id: item.id,
       name: item.name,
@@ -43,6 +44,7 @@ export const addFood = async (item: Omit<FoodItem, 'id'>): Promise<FoodItem> => 
 };
 
 export const updateFood = async (id: number, updates: Partial<Omit<FoodItem, 'id'>>): Promise<FoodItem> => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const payload: any = {};
   if (updates.name !== undefined) payload.name = updates.name;
   if (updates.quantity !== undefined) payload.quantity = updates.quantity;

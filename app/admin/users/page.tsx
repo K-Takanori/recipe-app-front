@@ -47,7 +47,7 @@ export default function UserManagementPage() {
       } else {
         setError("ユーザーリストの取得に失敗しました。");
       }
-    } catch (err) {
+    } catch {
       setError("ネットワークエラーが発生しました。");
     } finally {
       setLoading(false);
@@ -80,7 +80,7 @@ export default function UserManagementPage() {
         const errorMsg = Array.isArray(data.error) ? data.error.join("\n") : (data.error || "作成に失敗しました。");
         setFormError(errorMsg);
       }
-    } catch (err) {
+    } catch {
       setFormError("接続エラーが発生しました。");
     } finally {
       setSubmitting(false);
