@@ -103,10 +103,14 @@ export default function UserManagementPage() {
     try {
       await deleteUser(targetUserId);
       setUsers(users.filter(u => u.id !== targetUserId));
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Failed to delete user", err);
       // alert or set error
-      setFormError(err.message || "ユーザーの削除に失敗しました。");
+      if (err instanceof Error) {
+        setFormError(err.message || "ユーザーの削除に失敗しました。");
+      } else {
+        setFormError("ユーザーの削除に失敗しました。");
+      }
     }
   };
 
